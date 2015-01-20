@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument("--patchsize", type=int, default=8)
     parser.add_argument("--var-threshold", type=float, default=0.9)
     parser.add_argument("--num-centroids", type=int, default=400)
-    parser.add_argument("--v-min, type=int, default=44)
+    parser.add_argument("--v-min", type=int, default=44)
     parser.add_argument("--v-max", type=int, default=82)
     parser.add_argument("--h-min", type=int, default=16)
     parser.add_argument("--h-max", type=int, default=66)
