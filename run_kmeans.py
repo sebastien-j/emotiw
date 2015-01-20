@@ -53,7 +53,7 @@ def main():
 
     training = []
     for dir in sorted(os.listdir(root_dir)):
-        for file in sorted(os.listdir(os.path.join(root_dir, dir)):
+        for file in sorted(os.listdir(os.path.join(root_dir, dir))):
             training.append(imread(os.path.join(root_dir, dir, file))[v_min:v_max, h_min:h_max])
 
     training = asarray(training)
