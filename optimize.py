@@ -38,7 +38,7 @@ def main():
     labels = []
 
     root_dir = args.root_dir
-    label_dir = label_dir
+    label_dir = args.label_dir
     for dir in sorted(os.listdir(root_dir)):
         with open(os.path.join(label_dir, dir)) as f:
             cur_label = zeros(7)
