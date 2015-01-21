@@ -14,7 +14,7 @@ def parse_args():
     parser.add_argument("--h-min", type=int, default=16)
     parser.add_argument("--h-max", type=int, default=66)
     parser.add_argument("--root-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/facetubes_96x96')
-    parser.add_argument("--label-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/labels')
+    parser.add_argument("--label-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/Labels')
     parser.add_argument("--save-weights", type=str, default='/data/lisatmp3/jeasebas/emotiw/weights.npy')
     parser.add_argument("--save-biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy')
     parser.add_argument("--features", type=str)
