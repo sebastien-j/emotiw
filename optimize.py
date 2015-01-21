@@ -47,7 +47,7 @@ def main():
             data.append(imread(os.path.join(root_dir,dir,file))[v_min:v_max,h_min:h_max])
             labels.append(cur_label)
     data = asarray(data)
-    labels = asarray(labels)
+    labels = asarray(labels).T
     num_images = shape(data)[0]
 
     order = arange(num_images)
