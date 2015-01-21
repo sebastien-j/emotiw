@@ -66,7 +66,7 @@ def main():
         labels_shuffled[:,j] = labels[:,order[j]]
 
     numclasses = 7
-    wc = args.weight_cost
+    wc = args.wc
 
     lr = logreg.Logreg(numclasses, features_shuffled.shape[0])
     lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=500)
