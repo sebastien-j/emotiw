@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument("--label-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/Labels')
     parser.add_argument("--weights", type=str, default='/data/lisatmp3/jeasebas/emotiw/weights.npy')
     parser.add_argument("--biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy')
-    parser.add_argument("--features", type=str)
+    parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--save-probabilities", type=str, default='/data/lisatmp3/jeasebas/emotiw/probabilities.npy')
 
     return parser.parse_args()

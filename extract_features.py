@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument("--centroids", type=str, default='/data/lisatmp3/jeasebas/emotiw/centroids.npy')
     parser.add_argument("--mean-inter", type=str, default='/data/lisatmp3/jeasebas/emotiw/mean_inter.npy')
     parser.add_argument("--v-list", type=str, default='/data/lisatmp3/jeasebas/emotiw/V_list.npy')
-    parser.add_argument("--save-features", type=str)
+    parser.add_argument("--save-features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
 
     return parser.parse_args()
 
