@@ -1,7 +1,6 @@
 import os
 from pylab import *
 import numpy as np
-import logreg
 
 def parse_args():
     parser = argparse.ArgumentParser()
