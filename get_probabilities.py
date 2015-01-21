@@ -26,7 +26,7 @@ def main():
     h_sections = args.h_sections
     
     label_dict = {'Angry':0, 'Disgust':1, 'Fear':2, 'Happy':3, 'Sad':4, 'Surprise':5, 'Neutral':6}
-    num_classes = len(label_dict)
+    numclasses = len(label_dict)
 
     lr = logreg.Logreg(numclasses, v_sections*h_sections*num_centroids)
     lr.weights = np.load("args.weights")
