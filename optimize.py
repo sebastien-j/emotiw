@@ -39,7 +39,8 @@ def main():
     label_dir = label_dir
     for dir in sorted(os.listdir(root_dir)):
         with open(os.path.join(label_dir, dir)) as f:
-            cur_label = label_dict[f.readline().strip()]
+            cur_label = zeros(7)
+            cur_label[label_dict[f.readline().strip()]] = 1
         for file in sorted(os.listdir(os.path.join(root_dir,dir))):
             data.append(imread(os.path.join(root_dir,dir,file))[v_min:v_max,h_min:h_max])
             labels.append(cur_label)
