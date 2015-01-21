@@ -29,8 +29,8 @@ def main():
     numclasses = len(label_dict)
 
     lr = logreg.Logreg(numclasses, v_sections*h_sections*num_centroids)
-    lr.weights = np.load("args.weights")
-    lr.biases = np.load("args.biases")
+    lr.weights = np.load(args.weights)
+    lr.biases = np.load(args.biases)
 
     features = np.load(args.features)
 
