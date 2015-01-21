@@ -40,7 +40,10 @@ def main():
     start = 0
     for dir in sorted(os.listdir(root_dir)):
         end = start + len(sorted(os.listdir(os.path.join(root_dir,dir))))
-        probabilities.append(mean(lr.probabilities(features[:,start:end]),1))
+        if end > start:
+            probabilities.append(mean(lr.probabilities(features[:,start:end]),1))
+        else:
+            probabilities.append(asarray(7*[1./7]))
         start = end
     probabilities = asarray(probabilities)
     
@@ -55,7 +58,7 @@ def main():
                 if label_dict[f.readline().strip()] == np.argmax(probabilities[i]):
                     correct += 1
         total = i + 1
-        print (correct * 100. / total)
+        print correct, total, (correct * 100. / total)
 
 if __name__ == "__main__":
     main()
