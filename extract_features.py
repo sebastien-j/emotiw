@@ -98,7 +98,8 @@ def main():
 
     data = []
 
-    for dir in sorted(args.root_dir):
+    root_dir = args.root_dir
+    for dir in sorted(root_dir):
         for file in sorted(os.listdir(os.path.join(root_dir,dir))):
             data.append(imread(os.path.join(root_dir,dir,file))[v_min:v_max,h_min:h_max])
 
