@@ -114,10 +114,10 @@ def main():
         print j
         features[:,batchsize*j:batchsize*(j+1)] = feature_extract(data[batchsize*j:batchsize*(j+1)])
 
-    if num_test_images%batchsize > 1:
+    if num_images%batchsize > 1:
         features[:,num_images - num_images%batchsize:num_images] = feature_extract(data[num_images - num_images%batchsize:num_images])
     elif num_images%batchsize == 1:
-        features[:,num_images - num_images%batchsize:num_test_images] = feature_extract(data[num_images - num_images%batchsize:num_images])[:,None]
+        features[:,num_images - num_images%batchsize:num_images] = feature_extract(data[num_images - num_images%batchsize:num_images])[:,None]
     
     if args.save_features:
         np.save(args.save_features, features)
