@@ -23,6 +23,8 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    args = parse_args()
+
     num_centroids = args.num_centroids
     v_sections = args.v_sections
     h_sections = args.h_sections
