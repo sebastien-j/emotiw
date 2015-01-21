@@ -52,7 +52,7 @@ def main():
         label_dir = args.label_dir
         for i, dir in enumerate(sorted(os.listdir(root_dir))):
             with open(os.path.join(label_dir, dir)) as f:
-                if label_dict[f.readline().strip()]] == np.argmax(probabilities[i]):
+                if label_dict[f.readline().strip()] == np.argmax(probabilities[i]):
                     correct += 1
         total = i + 1
         print (correct * 100. / total)
