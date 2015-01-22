@@ -19,6 +19,7 @@ def parse_args():
     parser.add_argument("--save-biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy')
     parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--wc", type=float, default=1e-3)
+    parser.add_argument("--dropout", action="store_true")
 
     return parser.parse_args()
 
@@ -69,7 +70,16 @@ def main():
     wc = args.wc
 
     lr = logreg.Logreg(numclasses, features_shuffled.shape[0])
-    lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=500)
+    if not args.dropout:
+        original_features_shuffled = features_shuffled.copy()
+        features_shape = shape(features_shuffled)
+        for i in xrange(500):
+            print i
+            mask = np.random.randint(2, size = features_shape)
+            features_shuffled = original_features_shuffled * mask
+            lr.train_cg(features_shuffled,labels_shuffled,verbose=False,weightcost=wc,maxnumlinesearch=1)
+    else:
+        lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=500)
 
     np.save(args.save_weights, lr.weights)
     np.save(args.save_biases, lr.biases)
