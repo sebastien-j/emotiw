@@ -70,7 +70,7 @@ def main():
     wc = args.wc
 
     lr = logreg.Logreg(numclasses, features_shuffled.shape[0])
-    if not args.dropout:
+    if args.dropout:
         original_features_shuffled = features_shuffled.copy()
         features_shape = shape(features_shuffled)
         for i in xrange(500):
