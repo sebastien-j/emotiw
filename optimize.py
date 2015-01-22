@@ -77,7 +77,7 @@ def main():
             print i
             mask = np.random.randint(2, size = features_shape)
             features_shuffled = original_features_shuffled * mask
-            lr.train_cg(features_shuffled,labels_shuffled,verbose=False,weightcost=wc,maxnumlinesearch=1)
+            lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=1)
     else:
         lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=500)
 
