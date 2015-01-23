@@ -20,6 +20,8 @@ def parse_args():
     parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--wc", type=float, default=1e-3)
     parser.add_argument("--dropout", action="store_true")
+    parser.add_argument("--dropout-fixed", type=int, default=10)
+    parser.add_argument("--maxnumlinesearch", type=int, default=500)
 
     return parser.parse_args()
 
@@ -73,13 +75,13 @@ def main():
     if args.dropout:
         original_features_shuffled = features_shuffled.copy()
         features_shape = shape(features_shuffled)
-        for i in xrange(500):
+        for i in xrange(args.maxnumlinesearch/args.dropout_fixed):
             print i
             mask = np.random.randint(2, size = features_shape)
             features_shuffled = original_features_shuffled * mask
-            lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=1)
+            lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.dropout_fixed)
     else:
-        lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=500)
+        lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.maxnumlinesearch)
 
     np.save(args.save_weights, lr.weights)
     np.save(args.save_biases, lr.biases)
