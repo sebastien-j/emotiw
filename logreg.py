@@ -160,7 +160,7 @@ class Logreg(object):
         gradb = numpy.zeros((self.numclasses), dtype=float)
         
         for i in xrange(epochs):
-            print epoch
+            print i
             permutation = numpy.random.permutation(numcases)
             shuffled_features = features[:, permutation]
             shuffled_labels = labels[:, permutation]
