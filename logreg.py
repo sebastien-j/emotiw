@@ -169,9 +169,9 @@ class Logreg(object):
                 shuffled_features = shuffled_features * mask
 
             for j in xrange(numcases/batchsize + int(numcases/batchsize > 0)):            
-                likelihood = -self.cost(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
-                self.params[:] -= lr * self.grad(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
-                likelihood_new = -self.cost(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
+                likelihood = -self.cost(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
+                self.params[:] -= lr * self.grad(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
+                likelihood_new = -self.cost(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
                 lr *= lr_decay
 
     def f(self,x,features,labels,weightcost):
