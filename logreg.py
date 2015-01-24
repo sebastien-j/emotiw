@@ -97,8 +97,8 @@ class Logreg(object):
         gradw = gradw + 2*weightcost * self.weights
         return numpy.hstack((gradw.flatten(),gradb))
 
-    def probabilities(self, features):
-        scores = numpy.dot(self.weights,features) + self.biases[:,None]
+    def probabilities(self, features, multiplier=1.):
+        scores = numpy.dot(multiplier*self.weights,features) + self.biases[:,None]
         return numpy.exp(scores - logsumexp(scores,0))
 
     def classify(self, features): 
@@ -145,7 +145,34 @@ class Logreg(object):
                 likelihood = likelihood_new
             else:
                 stepsize = stepsize*0.5
-                self.params[:] = params_old 
+                self.params[:] = params_old
+    
+    def train_minibatch(self, features, labels, weightcost, epochs, batchsize, lr, lr_decay=1., dropout=False):
+        """Train the model using gradient descent.
+  
+           Inputs:
+           -Instances (column-wise),
+           -'One-hot'-encoded labels, 
+           -Scalar weightcost, specifying the amount of regularization"""
+      
+        numcases = features.shape[1]
+        gradw = numpy.zeros((self.numclasses,self.numdimensions), dtype=float)
+        gradb = numpy.zeros((self.numclasses), dtype=float)
+        
+        for i in xrange(epochs):
+            print epoch
+            permutation = numpy.random.permutation(numcases)
+            shuffled_features = features[:, permutation]
+            shuffled_labels = labels[:, permutation]
+            if dropout:
+                mask = np.random.randint(2, size = features_shape)
+                shuffled_features = shuffled_features * mask
+
+            for j in xrange(numcases/batchsize + int(numcases/batchsize > 0)):            
+                likelihood = -self.cost(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
+                self.params[:] -= lr * self.grad(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
+                likelihood_new = -self.cost(shuffled_features[batchsize*j:batchsize*(j+1)], shuffled_labels[batchsize*j:batchsize*(j+1)], weightcost)
+                lr *= lr_decay
 
     def f(self,x,features,labels,weightcost):
         """Wrapper function for minimize"""

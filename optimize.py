@@ -19,6 +19,10 @@ def parse_args():
     parser.add_argument("--save-biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy')
     parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--wc", type=float, default=1e-3)
+    parser.add_argument("--sgd", action="store_true")
+    parser.add_argument("--lr", type=float, default=0.1)
+    parser.add_argument("--epochs", type=int, default=25)
+    parser.add_argument("--bs", type=int, default=50)
     parser.add_argument("--dropout", action="store_true")
     parser.add_argument("--dropout-fixed", type=int, default=10)
     parser.add_argument("--maxnumlinesearch", type=int, default=500)
@@ -60,28 +64,32 @@ def main():
     assert num_images == np.shape(features)[1]
     features_shuffled = zeros((v_sections*h_sections*num_centroids,num_images))
 
-    for j in xrange(num_images):
-        features_shuffled[:,j] = features[:,order[j]]
+    if not args.sgd:
+        for j in xrange(num_images):
+            features_shuffled[:,j] = features[:,order[j]]
 
-    labels_shuffled = zeros((7,num_images))
+        labels_shuffled = zeros((7,num_images))
 
-    for j in xrange(num_images):
-        labels_shuffled[:,j] = labels[:,order[j]]
+        for j in xrange(num_images):
+            labels_shuffled[:,j] = labels[:,order[j]]
 
     numclasses = 7
     wc = args.wc
 
     lr = logreg.Logreg(numclasses, features_shuffled.shape[0])
-    if args.dropout:
-        original_features_shuffled = features_shuffled.copy()
-        features_shape = shape(features_shuffled)
-        for i in xrange(args.maxnumlinesearch/args.dropout_fixed):
-            print i
-            mask = np.random.randint(2, size = features_shape)
-            features_shuffled = original_features_shuffled * mask
-            lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.dropout_fixed)
+    if not args.sgd:
+        if args.dropout:
+            original_features_shuffled = features_shuffled.copy()
+            features_shape = shape(features_shuffled)
+            for i in xrange(args.maxnumlinesearch/args.dropout_fixed):
+                print i
+                mask = np.random.randint(2, size = features_shape)
+                features_shuffled = original_features_shuffled * mask
+                lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.dropout_fixed)
+        else:
+            lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.maxnumlinesearch)
     else:
-        lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.maxnumlinesearch)
+        lr.train_minibatch(features, labels, wc, args.epochs, args.bs, args.lr, dropout=args.dropout)
 
     np.save(args.save_weights, lr.weights)
     np.save(args.save_biases, lr.biases)
