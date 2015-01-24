@@ -11,8 +11,8 @@ def parse_args():
     parser.add_argument("--h-sections", type=int, default=4)
     parser.add_argument("--root-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/facetubes_96x96')
     parser.add_argument("--label-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/Labels')
-    parser.add_argument("--weights", type=str, default='/data/lisatmp3/jeasebas/emotiw/weights.npy')
-    parser.add_argument("--biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy')
+    parser.add_argument("--weights", type=str, default='/data/lisatmp3/jeasebas/emotiw/weights.npy', nargs='+')
+    parser.add_argument("--biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy', nargs='+')
     parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--save-probabilities", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_probabilities.npy')
 
@@ -28,9 +28,12 @@ def main():
     label_dict = {'Angry':0, 'Disgust':1, 'Fear':2, 'Happy':3, 'Sad':4, 'Surprise':5, 'Neutral':6}
     numclasses = len(label_dict)
 
-    lr = logreg.Logreg(numclasses, v_sections*h_sections*num_centroids)
-    lr.weights = np.load(args.weights)
-    lr.biases = np.load(args.biases)
+    lrs = []
+    assert len(args.weights) == len(args.biases)
+    for i in xrange(len(args.weights)):
+        lrs.append(logreg.Logreg(numclasses, v_sections*h_sections*num_centroids))
+        lrs[i].weights = np.load(args.weights[i])
+        lrs[i].biases = np.load(args.biases[i])
 
     features = np.load(args.features)
 
@@ -41,7 +44,10 @@ def main():
     for dir in sorted(os.listdir(root_dir)):
         end = start + len(sorted(os.listdir(os.path.join(root_dir,dir))))
         if end > start:
-            probabilities.append(mean(lr.probabilities(features[:,start:end]),1))
+            tmp_probs = 0.0
+            for i in xrange(len(args.weights)):
+                tmp_probs += mean(lrs[i].probabilities(features[:,start:end]),1)
+            probabilities.append(tmp_probs)
         else:
             probabilities.append(asarray(7*[1./7]))
         start = end
