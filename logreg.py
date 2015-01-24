@@ -165,7 +165,7 @@ class Logreg(object):
             shuffled_features = features[:, permutation]
             shuffled_labels = labels[:, permutation]
             if dropout:
-                mask = numpy.random.randint(2, size = features_shape)
+                mask = numpy.random.randint(2, size = numpy.shape(features))
                 shuffled_features = shuffled_features * mask
 
             for j in xrange(numcases/batchsize + int(numcases/batchsize > 0)):            
