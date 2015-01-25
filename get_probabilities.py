@@ -15,6 +15,7 @@ def parse_args():
     parser.add_argument("--biases", type=str, default='/data/lisatmp3/jeasebas/emotiw/biases.npy', nargs='+')
     parser.add_argument("--features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
     parser.add_argument("--save-probabilities", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_probabilities.npy')
+    parser.add_argument("--dropout", action="store_true")
 
     return parser.parse_args()
 
@@ -46,7 +47,7 @@ def main():
         if end > start:
             tmp_probs = 0.0
             for i in xrange(len(args.weights)):
-                tmp_probs += mean(lrs[i].probabilities(features[:,start:end]),1)
+                tmp_probs += mean(lrs[i].probabilities(features[:,start:end], multiplier=float(args.dropout)),1)
             probabilities.append(tmp_probs)
         else:
             probabilities.append(asarray(7*[1./7]))
