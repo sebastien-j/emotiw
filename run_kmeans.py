@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument("--h-max", type=int, default=70)
     parser.add_argument("--v-sections", type=int, default=4)
     parser.add_argument("--h-sections", type=int, default=4)
-    parser.add_argument("--root-dir", type=str, default='/data/lisa/exp/ebrahims/emotiw_pipeline/EmotiW2014_train/facetubes_96x96')
+    parser.add_argument("--root-dir", type=str, default='/data/lisatmp3/jeasebas/emotiw/EmotiW2014_train/facetubes_96x96')
     parser.add_argument("--save-centroids", type=str, default='/data/lisatmp3/jeasebas/emotiw/centroids.npy')
     parser.add_argument("--save-mean-inter", type=str, default='/data/lisatmp3/jeasebas/emotiw/mean_inter.npy')
     parser.add_argument("--save-v-list", type=str, default='/data/lisatmp3/jeasebas/emotiw/V_list.npy')
