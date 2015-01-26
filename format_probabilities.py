@@ -20,7 +20,7 @@ def main():
     numclasses = len(label_dict)
 
     with open(args.save_file, 'w') as f:
-        for i, dir in enumerate(sorted(os.listdir(root_dir))):
+        for i, dir in enumerate(sorted(os.listdir(args.root_dir))):
             cur_str = dir + '.full.pca.pkl' + ' ' + invert_dict(np.argmax(args.probabilities[i]))
             for j in xrange(numclasses):
                 cur_str += (' ' + str(args.probabilities[i,j]))
