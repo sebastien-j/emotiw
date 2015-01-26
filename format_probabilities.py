@@ -26,9 +26,7 @@ def main():
             for j in xrange(numclasses):
                 cur_str += (' ' + str(probabilities[i,j]))
             cur_str += ('\n')
-            f.write(cur_str)
-
-    probabilities.close()            
+            f.write(cur_str)        
 
 if __name__ == "__main__":
     main()
