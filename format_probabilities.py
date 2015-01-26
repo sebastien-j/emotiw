@@ -8,7 +8,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root-dir", type=str, default='/data/lisatmp3/jeasebas/emotiw/EmotiW2014_train/facetubes_96x96')
     parser.add_argument("--probabilities", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_probabilities.npy')
-    parser.add_argument("--save-file", type=str")
+    parser.add_argument("--save-file", type=str)
 
     return parser.parse_args()
 
