@@ -47,7 +47,7 @@ def main():
         if end > start:
             tmp_probs = 0.0
             for i in xrange(len(args.weights)):
-                tmp_probs += mean(lrs[i].probabilities(features[:,start:end], multiplier=float(args.dropout)),1)
+                tmp_probs += mean(lrs[i].probabilities(features[:,start:end], multiplier=float(args.dropout)+1.),1)
             probabilities.append(tmp_probs)
         else:
             probabilities.append(asarray(7*[1./7]))
