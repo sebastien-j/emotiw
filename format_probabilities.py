@@ -18,14 +18,17 @@ def main():
     label_dict = {'Angry':0, 'Disgust':1, 'Fear':2, 'Happy':3, 'Sad':4, 'Surprise':5, 'Neutral':6}
     invert_dict = {0:'Angry', 1:'Disgust', 2:'Fear', 3:'Happy', 4:'Sad', 5:'Surprise', 6:'Neutral'} 
     numclasses = len(label_dict)
+    probabilities = np.load(args.probabilities)
 
     with open(args.save_file, 'w') as f:
         for i, dir in enumerate(sorted(os.listdir(args.root_dir))):
-            cur_str = dir + '.full.pca.pkl' + ' ' + invert_dict[np.argmax(args.probabilities[i])]
+            cur_str = dir + '.full.pca.pkl' + ' ' + invert_dict[np.argmax(probabilities[i])]
             for j in xrange(numclasses):
-                cur_str += (' ' + str(args.probabilities[i,j]))
+                cur_str += (' ' + str(probabilities[i,j]))
             cur_str += ('\n')
-            f.write(cur_str)            
+            f.write(cur_str)
+
+    probabilities.close()            
 
 if __name__ == "__main__":
     main()
