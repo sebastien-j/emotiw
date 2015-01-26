@@ -21,7 +21,7 @@ def main():
 
     with open(args.save_file, 'w') as f:
         for i, dir in enumerate(sorted(os.listdir(args.root_dir))):
-            cur_str = dir + '.full.pca.pkl' + ' ' + invert_dict(np.argmax(args.probabilities[i]))
+            cur_str = dir + '.full.pca.pkl' + ' ' + invert_dict[np.argmax(args.probabilities[i])]
             for j in xrange(numclasses):
                 cur_str += (' ' + str(args.probabilities[i,j]))
             cur_str += ('\n')
