@@ -160,9 +160,6 @@ class Logreg(object):
         gradb = numpy.zeros((self.numclasses), dtype=float)
         
         for i in xrange(epochs):
-            print i
-            full_likelihood = 0.0
-            full_likelihood_new = 0.0
             permutation = numpy.random.permutation(numcases)
             shuffled_features = features[:, permutation]
             shuffled_labels = labels[:, permutation]
@@ -170,14 +167,10 @@ class Logreg(object):
                 mask = numpy.random.randint(2, size = numpy.shape(features))
                 shuffled_features = shuffled_features * mask
 
-            for j in xrange(numcases/batchsize + int(numcases/batchsize > 0)):            
-                likelihood = -self.cost(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
-                self.params[:] -= lr * self.grad(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
-                likelihood_new = -self.cost(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost)
-                full_likelihood += likelihood
-                full_likelihood_new += likelihood_new
+            for j in xrange(numcases/batchsize + int(numcases/batchsize > 0)):
+                self.params[:] -= lr * self.grad(shuffled_features[:,batchsize*j:batchsize*(j+1)], shuffled_labels[:,batchsize*j:batchsize*(j+1)], weightcost * batchsize / float(numcases))
                 lr *= lr_decay
-            print full_likelihood, full_likelihood_new
+            print i, -self.cost(features, labels, weightcost)
 
     def f(self,x,features,labels,weightcost):
         """Wrapper function for minimize"""
