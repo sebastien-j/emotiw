@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument("--dropout", action="store_true")
     parser.add_argument("--dropout-fixed", type=int, default=10)
     parser.add_argument("--maxnumlinesearch", type=int, default=500)
+    parser.add_argument("--save-every", type=int, help="for sgd only")
 
     return parser.parse_args()
 
@@ -88,11 +89,18 @@ def main():
                 lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.dropout_fixed)
         else:
             lr.train_cg(features_shuffled,labels_shuffled,verbose=True,weightcost=wc,maxnumlinesearch=args.maxnumlinesearch)
+    
+        np.save(args.save_weights, lr.weights)
+        np.save(args.save_biases, lr.biases)
     else:
-        lr.train_minibatch(features, labels, wc, args.epochs, args.bs, args.lr, dropout=args.dropout)
-
-    np.save(args.save_weights, lr.weights)
-    np.save(args.save_biases, lr.biases)
+        if args.save_every == 0:
+            save_every = args.epochs
+        else:
+            save_every = args.save_every
+        for i in xrange(args.epochs / args.save_every):
+            lr.train_minibatch(features, labels, wc, args.epochs / save_every, args.bs, args.lr, dropout=args.dropout)
+            np.save(args.save_weights[:-3] + str((i+1)*save_every) + '.npy', lr.weights)
+            np.save(args.save_biases[:-3] + str((i+1)*save_every) + '.npy', lr.biases)
 
 if __name__ == "__main__":
     main()
