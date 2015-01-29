@@ -19,6 +19,7 @@ def parse_args():
     parser.add_argument("--mean-inter", type=str, default='/data/lisatmp3/jeasebas/emotiw/mean_inter.npy')
     parser.add_argument("--v-list", type=str, default='/data/lisatmp3/jeasebas/emotiw/V_list.npy')
     parser.add_argument("--save-features", type=str, default='/data/lisatmp3/jeasebas/emotiw/train_features.npy')
+    parser.add_argument("--std-pool", action="store_true")
 
     return parser.parse_args()
 
@@ -87,9 +88,14 @@ def main():
         
         pooled_features = zeros((array_im.shape[0],v_sections*h_sections*num_centroids))
 
-        for i_v in xrange(v_sections):
-            for i_h in xrange(h_sections):
-                pooled_features[:,(i_v*h_sections+i_h)*num_centroids:(i_v*h_sections+i_h+1)*num_centroids] = mean(feature_map[:,i_v*h_sections+i_h],1)
+        if not args.std_pool:
+            for i_v in xrange(v_sections):
+                for i_h in xrange(h_sections):
+                    pooled_features[:,(i_v*h_sections+i_h)*num_centroids:(i_v*h_sections+i_h+1)*num_centroids] = mean(feature_map[:,i_v*h_sections+i_h],1)
+        else:
+            for i_v in xrange(v_sections):
+                for i_h in xrange(h_sections):
+                    pooled_features[:,(i_v*h_sections+i_h)*num_centroids:(i_v*h_sections+i_h+1)*num_centroids] = std(feature_map[:,i_v*h_sections+i_h],1)
         
         if array_im.shape[0] == 1:
             pooled_features = reshape(pooled_features, (v_sections*h_sections*num_centroids))
