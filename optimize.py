@@ -98,7 +98,7 @@ def main():
         else:
             save_every = args.save_every
         for i in xrange(args.epochs / args.save_every):
-            lr.train_minibatch(features, labels, wc, args.epochs / save_every, args.bs, args.lr, dropout=args.dropout)
+            lr.train_minibatch(features, labels, wc, save_every, args.bs, args.lr, dropout=args.dropout)
             np.save(args.save_weights[:-3] + str((i+1)*save_every) + '.npy', lr.weights)
             np.save(args.save_biases[:-3] + str((i+1)*save_every) + '.npy', lr.biases)
 
